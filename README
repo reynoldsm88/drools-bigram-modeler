@@ -1,0 +1,1 @@
+For docker on Mac grep for <PUT_IP_HERE> and replace it with the ifconfig command at the top of the run.sh script

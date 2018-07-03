@@ -1,0 +1,36 @@
+package org.reynoldsm88.bigram.modeler.rules;
+
+import java.util.List;
+import java.util.regex.Pattern;
+import org.reynoldsm88.bigram.modeler.model.BiGram;
+import org.reynoldsm88.bigram.modeler.model.BiGramInstance;
+import org.reynoldsm88.bigram.modeler.model.Sentence;
+
+rule "Ignore sentences that have http links"
+    salience 100
+    when
+        $sentence : Sentence( text.matches( ".*http(s)?://.*" ) )
+    then
+        delete( $sentence );
+end
+
+rule "Create bi-gram instances for sentences"
+    when
+        $sentence : Sentence()
+    then
+        for( BiGramInstance b : $sentence.biGrams() ){
+            insert( b );
+        }
+
+        delete( $sentence );
+end
+
+rule "Count bi-grams"
+    when
+        BiGramInstance( $root : root, $stem : stem )
+        not BiGram( root == $root, $stem == stem )
+        accumulate( BiGramInstance( root == $root, stem == $stem ); $count : count() )
+    then
+        BiGram b = new BiGram( $root, $stem, $count );
+        insert( b );
+end
