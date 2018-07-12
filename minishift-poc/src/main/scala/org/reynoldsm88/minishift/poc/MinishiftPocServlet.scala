@@ -4,6 +4,6 @@ import org.scalatra.{Ok, ScalatraServlet}
 
 class MinishiftPocServlet extends ScalatraServlet {
     get( "/" ) {
-                   Ok( "" )
+                   Ok( "michael" )
                }
 }

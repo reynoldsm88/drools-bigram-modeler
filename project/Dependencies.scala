@@ -53,7 +53,7 @@ object Dependencies {
     // TODO - fix versions later
     val scalatra = Seq( "org.scalatra" %% "scalatra" % scalatraVersion,
                         "org.scalatra" %% "scalatra-scalatest" % scalatraVersion % "test",
-                        "ch.qos.logback" % "logback-classic" % "1.2.3" % "runtime",
+                        "ch.qos.logback" % "logback-classic" % "1.2.3",
                         "org.eclipse.jetty" % "jetty-webapp" % "9.2.19.v20160908",
-                        "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided" )
+                        "javax.servlet" % "javax.servlet-api" % "3.1.0" )
 }

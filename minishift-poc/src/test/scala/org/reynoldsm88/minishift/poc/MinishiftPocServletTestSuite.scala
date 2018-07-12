@@ -8,9 +8,11 @@ class MinishiftPocServletTestSuite extends ScalatraSuite with FlatSpecLike {
     addServlet( classOf[ MinishiftPocServlet ], "/*" )
 
     "Get request" should "return http ok for now" in {
-        for ( i <- 0 to 5 ) println( "++++++++++++++++++++++++++++++++++++++" )
+        //@formatter:off
         get( "/" ) {
-                       status should equal( 200 )
-                   }
+            status should equal( 200 )
+            body should equal( "michael" )
+        }
+        //@formatter:on
     }
 }
