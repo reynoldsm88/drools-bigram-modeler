@@ -15,7 +15,7 @@ object Main {
         val jobConfig = fromJson[ JobConfig ]( Source.fromFile( args( 0 ) ).mkString )
         println( jobConfig )
 
-        new BigramExtractor( jobConfig, spark ).run()
+        new SparkDroolsBigramExtractor( jobConfig, spark ).run()
 
         spark.stop()
     }

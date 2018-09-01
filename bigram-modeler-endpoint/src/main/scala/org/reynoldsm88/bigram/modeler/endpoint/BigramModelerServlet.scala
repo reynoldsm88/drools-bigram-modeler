@@ -5,5 +5,5 @@ import org.scalatra.{Ok, ScalatraServlet}
 class BigramModelerServlet extends ScalatraServlet {
     get( "/" ) {
                    Ok( "michael" )
-    }
+               }
 }
