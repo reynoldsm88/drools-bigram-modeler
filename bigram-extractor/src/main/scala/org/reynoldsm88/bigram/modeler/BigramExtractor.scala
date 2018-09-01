@@ -10,6 +10,7 @@ import org.reynoldsm88.bigram.modeler.config.JobConfig
 import org.reynoldsm88.bigram.modeler.model.{BiGram, Sentence}
 import org.reynoldsm88.bigram.modeler.text.sources.Hangouts
 
+//TODO - refactor spark context injection to use traits and cake pattern for dependency injection
 class BigramExtractor( val jobConfig : JobConfig, val spark : SparkContext ) {
 
     def rules( group : String, artifact : String, version : String ) : KieBase = {

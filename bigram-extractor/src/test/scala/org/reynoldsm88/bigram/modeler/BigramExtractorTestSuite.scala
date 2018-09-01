@@ -1,7 +1,6 @@
 package org.reynoldsm88.bigram.modeler
 
 import com.holdenkarau.spark.testing.{RDDComparisons, SharedSparkContext}
-import org.reynoldsm88.bigram.modeler.BigramExtractor
 import org.reynoldsm88.bigram.modeler.config.{JobConfig, RulesDescriptor, SourceDescriptor}
 import org.scalatest.FlatSpec
 
