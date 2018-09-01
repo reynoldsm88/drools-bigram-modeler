@@ -1,4 +1,4 @@
-package org.reynoldsm88.minishift.poc
+package org.reynoldsm88.bigram.modeler.endpoint
 
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.DefaultServlet
@@ -13,7 +13,7 @@ object Main {
         val context = new WebAppContext()
         context.setContextPath( "/" )
         context.setResourceBase( "src/main/webapp" )
-        context.setInitParameter( ScalatraListener.LifeCycleKey, "org.reynoldsm88.minishift.poc.ScalatraInit" )
+        context.setInitParameter( ScalatraListener.LifeCycleKey, "org.reynoldsm88.bigram.modeler.endpoint.ScalatraInit" )
         context.addEventListener( new ScalatraListener )
         context.addServlet( classOf[ DefaultServlet ], "/" )
 

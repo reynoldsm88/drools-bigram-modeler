@@ -1,5 +1,5 @@
 organization := "org.reynoldsm88"
-name := "minishift-poc"
+name := "bigram-modeler-endpoint"
 version := "0.0.1-SNAPSHOT"
 
 mainClass in(Compile, run) := Some( "org.reynoldsm88.minishift.poc.Main" )

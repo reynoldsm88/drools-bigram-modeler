@@ -1,11 +1,11 @@
-package org.reynoldsm88.minishift.poc
+package org.reynoldsm88.bigram.modeler.endpoint
 
 import org.scalatest.FlatSpecLike
 import org.scalatra.test.scalatest.ScalatraSuite
 
-class MinishiftPocServletTestSuite extends ScalatraSuite with FlatSpecLike {
+class BigramModelerServletTestSuite extends ScalatraSuite with FlatSpecLike {
 
-    addServlet( classOf[ MinishiftPocServlet ], "/*" )
+    addServlet( classOf[ BigramModelerServlet ], "/*" )
 
     "Get request" should "return http ok for now" in {
         //@formatter:off

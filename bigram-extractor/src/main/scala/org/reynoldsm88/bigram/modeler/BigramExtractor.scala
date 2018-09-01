@@ -42,7 +42,7 @@ class BigramExtractor( val jobConfig : JobConfig, val spark : SparkContext ) {
                                                              .fold( List[ BiGram ]() )( ( list, bigram ) => list ++ bigram ) )
                                                              .asInstanceOf[ RDD[ BiGram ] ]
 
-        //        // spark API deals much more naturally with tuples for various functions, can convert back to strongly typed model afterword
+        // spark API deals much more naturally with tuples for various functions, can convert back to strongly typed model afterword
         val consolidatedBiGrams : RDD[ BiGram ] = bigrams.map( bigram => ((bigram.root, bigram.stem), bigram.count) )
                                                          .groupByKey()
                                                          .map( values => BiGram( values._1._1, values._1._2, values._2.sum ) ) // there has to be a better way to do this

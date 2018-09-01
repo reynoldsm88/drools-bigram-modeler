@@ -20,7 +20,7 @@ resolvers in ThisBuild ++= Seq( "Sonatype releases" at "https://oss.sonatype.org
                                 "Typesafe repository" at "http://repo.typesafe.com/typesafe/releases/" )
 
 //@formatter:off
-lazy val root = ( project in file( "." ) ).aggregate( model, bigramExtractor, bigramRules, minishiftPoc )
+lazy val root = ( project in file( "." ) ).aggregate( model, bigramExtractor, bigramRules, bigramEndpoint )
 
 lazy val model = ( project in file( "model" ) ).settings( libraryDependencies ++= scalaTest )
 
@@ -35,6 +35,10 @@ lazy val bigramExtractor = ( project in file( "bigram-extractor" ) )
 
 val minishiftPoc = ( project in file( "minishift-poc" ) )
                                     .dependsOn( model, bigramRules )
+                                    .settings( libraryDependencies ++= spark ++ scalatra )
+
+val bigramEndpoint = ( project in file( "bigram-modeler-endpoint" ) )
+                                    .dependsOn( model, bigramRules, bigramExtractor )
                                     .settings( libraryDependencies ++= spark ++ scalatra )
 
 //@formatter:off
