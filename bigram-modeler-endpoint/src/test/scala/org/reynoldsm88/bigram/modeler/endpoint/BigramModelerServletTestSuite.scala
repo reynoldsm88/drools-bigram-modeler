@@ -1,8 +1,9 @@
 package org.reynoldsm88.bigram.modeler.endpoint
 
-import org.scalatest.FlatSpecLike
+import org.scalatest.{FlatSpecLike, Ignore}
 import org.scalatra.test.scalatest.ScalatraSuite
 
+@Ignore
 class BigramModelerServletTestSuite extends ScalatraSuite with FlatSpecLike {
 
     addServlet( classOf[ BigramModelerServlet ], "/*" )
