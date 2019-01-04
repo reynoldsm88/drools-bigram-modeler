@@ -33,12 +33,8 @@ lazy val bigramExtractor = ( project in file( "bigram-extractor" ) )
                                     .dependsOn( model, bigramRules )
                                     .settings( libraryDependencies ++= spark ++ drools ++ kie ++ sparkTestBase ++ scalaTest ++ gensonJSON )
 
-val minishiftPoc = ( project in file( "minishift-poc" ) )
-                                    .dependsOn( model, bigramRules )
-                                    .settings( libraryDependencies ++= spark ++ scalatra )
-
 val bigramEndpoint = ( project in file( "bigram-modeler-endpoint" ) )
                                     .dependsOn( model, bigramRules, bigramExtractor )
-                                    .settings( libraryDependencies ++= spark ++ scalaTest ++ scalatra ++ mockito )
+                                    .settings( libraryDependencies ++= spark ++ scalaTest ++ scalatra )
 
 //@formatter:off

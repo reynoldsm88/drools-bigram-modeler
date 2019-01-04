@@ -7,8 +7,7 @@ trait RulesProvider {
 }
 
 trait ClasspathRulesProvider extends RulesProvider {
+
     @Override
-    def rules( group : String, artifact : String, version : String ) : KieBase = {
-        KieServices.Factory.get.newKieClasspathContainer().getKieBase
-    }
+    def rules( group : String, artifact : String, version : String ) : KieBase = KieServices.Factory.get.newKieClasspathContainer().getKieBase
 }

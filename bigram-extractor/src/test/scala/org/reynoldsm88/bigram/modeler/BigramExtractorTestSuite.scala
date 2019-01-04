@@ -12,9 +12,8 @@ class BigramExtractorTestSuite extends FlatSpec with SharedSparkContext with RDD
     "Bigram Extractor" should "filter, parse, and add sentence boundaries an example Google Hangouts file" in {
 
         val expectedLangModel : LangModel = {
-            val bigrams : Set[BiGram] = {
-
-            }
+            val bigrams : Set[ BiGram ] = Set( BiGram( "a test", "</s>", 11L ), BiGram( "this is", "a", 11L ), BiGram( "is a", "test", 11L ), BiGram( "<s> this", "is", 11L ) )
+            LangModel( 1, bigrams )
         }
 
         val jobConfig : JobConfig = {
@@ -24,9 +23,8 @@ class BigramExtractorTestSuite extends FlatSpec with SharedSparkContext with RDD
             JobConfig( "hangouts-bigram-extractor", rules, sources )
         }
 
-        val extractor : SparkDroolsBigramExtractor = new SparkDroolsBigramExtractor( jobConfig, sc )
-        val actual = extractor.loadSources( jobConfig )
-        val expected = sc.textFile( testDataRootDir + "/output/hangouts-sample-expected.txt" )
-        assertRDDEquals( expected, actual )
+        val extractor : SparkDroolsBigramExtractor = new SparkDroolsBigramExtractor( jobConfig, sc ) with ClasspathRulesProvider
+        val langModel : LangModel = extractor.buildLangModel()
+        assert( expectedLangModel == langModel )
     }
 }

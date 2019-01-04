@@ -5,5 +5,7 @@ import org.reynoldsm88.bigram.modeler.config.JobConfig
 import org.reynoldsm88.bigram.modeler.model.LangModel
 
 trait BigramExtractor {
+
     def buildLangModel( config : JobConfig, spark : SparkContext ) : LangModel
+
 }

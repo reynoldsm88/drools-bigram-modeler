@@ -11,10 +11,12 @@ import org.reynoldsm88.bigram.modeler.model.{BiGram, LangModel, Sentence}
 import org.reynoldsm88.bigram.modeler.text.sources.Hangouts
 
 //TODO - refactor spark context injection to use traits and cake pattern for dependency injection
-class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark : SparkContext ) extends BigramExtractor with ClasspathRulesProvider {
+abstract class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark : SparkContext ) extends RulesProvider {
+
+    var version : Integer = 0
 
     //TODO - the sourcing code can be cleaned up to be more idiomatic using traits
-    def loadSources( config : JobConfig ) : RDD[ String ] = {
+    private def loadSources( config : JobConfig ) : RDD[ String ] = {
         var lines : RDD[ String ] = spark.emptyRDD[ String ]
         jobConfig.sources.map( sourceDescr => {
             if ( sourceDescr.resourceType == "hangouts" ) {
@@ -26,7 +28,7 @@ class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark : SparkCo
         lines
     }
 
-    override def buildLangModel( config : JobConfig, spark : SparkContext ) : LangModel = {
+    def buildLangModel( ) : LangModel = {
         // kbase is the only Kie API object that can be serialized as a whole, this prevents us from being able to specify the ksession though
         val kbase : Broadcast[ KieBase ] = spark.broadcast( rules( jobConfig.rules.group, jobConfig.rules.artifact, jobConfig.rules.version ) )
         val data : RDD[ String ] = loadSources( jobConfig )
@@ -38,13 +40,12 @@ class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark : SparkCo
                                                              .asInstanceOf[ RDD[ BiGram ] ]
 
         // spark API deals much more naturally with tuples for various functions, can convert back to strongly typed model afterword
-        val consolidatedBiGrams : RDD[ BiGram ] = bigrams.map( bigram => ((bigram.root, bigram.stem), bigram.count) )
+        val consolidatedBigrams : Set[ BiGram ] = bigrams.map( bigram => ((bigram.root, bigram.stem), bigram.count) )
                                                          .groupByKey()
                                                          .map( values => BiGram( values._1._1, values._1._2, values._2.sum ) ) // there has to be a better way to do this
-
-        //@formatter:on
-        consolidatedBiGrams.collect().foreach( println )
-
-        return null
+                                                         .collect()
+                                                         .toSet
+        version += 1
+        LangModel( version, consolidatedBigrams )
     }
 }
