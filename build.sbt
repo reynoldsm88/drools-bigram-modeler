@@ -35,6 +35,6 @@ lazy val bigramExtractor = ( project in file( "bigram-extractor" ) )
 
 val bigramEndpoint = ( project in file( "bigram-modeler-endpoint" ) )
                                     .dependsOn( model, bigramRules, bigramExtractor )
-                                    .settings( libraryDependencies ++= spark ++ scalaTest ++ scalatra )
+                                    .settings( libraryDependencies ++= spark ++ scalaTest ++ scalatra ++ sparkTestBase )
 
 //@formatter:off

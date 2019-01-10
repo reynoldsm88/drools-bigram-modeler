@@ -7,16 +7,16 @@ import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.rdd.RDD
 import org.kie.api.KieBase
 import org.reynoldsm88.bigram.modeler.config.JobConfig
-import org.reynoldsm88.bigram.modeler.model.{BiGram, LangModel, Sentence}
+import org.reynoldsm88.bigram.modeler.model.{BiGram, Sentence}
 import org.reynoldsm88.bigram.modeler.text.sources.Hangouts
 
 //TODO - refactor spark context injection to use traits and cake pattern for dependency injection
-abstract class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark : SparkContext ) extends RulesProvider {
+abstract class SparkDroolsBigramExtractor( spark : SparkContext ) extends BigramExtractor with RulesProvider {
 
     var version : Integer = 0
 
     //TODO - the sourcing code can be cleaned up to be more idiomatic using traits
-    private def loadSources( config : JobConfig ) : RDD[ String ] = {
+    private def loadSources( jobConfig : JobConfig ) : RDD[ String ] = {
         var lines : RDD[ String ] = spark.emptyRDD[ String ]
         jobConfig.sources.map( sourceDescr => {
             if ( sourceDescr.resourceType == "hangouts" ) {
@@ -28,7 +28,8 @@ abstract class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark 
         lines
     }
 
-    def buildLangModel( ) : LangModel = {
+    @Override
+    def extractBigrams( jobConfig : JobConfig ) : Set[ BiGram ] = {
         // kbase is the only Kie API object that can be serialized as a whole, this prevents us from being able to specify the ksession though
         val kbase : Broadcast[ KieBase ] = spark.broadcast( rules( jobConfig.rules.group, jobConfig.rules.artifact, jobConfig.rules.version ) )
         val data : RDD[ String ] = loadSources( jobConfig )
@@ -45,7 +46,6 @@ abstract class SparkDroolsBigramExtractor( val jobConfig : JobConfig, val spark 
                                                          .map( values => BiGram( values._1._1, values._1._2, values._2.sum ) ) // there has to be a better way to do this
                                                          .collect()
                                                          .toSet
-        version += 1
-        LangModel( version, consolidatedBigrams )
+        consolidatedBigrams
     }
 }
