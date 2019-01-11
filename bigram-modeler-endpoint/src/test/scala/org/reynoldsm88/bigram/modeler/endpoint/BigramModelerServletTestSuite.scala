@@ -12,7 +12,7 @@ class BigramModelerServletTestSuite extends ScalatraSuite with FlatSpecLike {
 
     protected implicit lazy val jsonFormats : Formats = DefaultFormats.withBigDecimal
 
-    addServlet( new BigramModelerServlet( new MockBigramExtactor() ), "/*" )
+    addServlet( new BigramModelerServlet( new DummyBigramExtactor() ), "/*" )
 
     "Get request" should "return http ok for now" in {
         //@formatter:off
