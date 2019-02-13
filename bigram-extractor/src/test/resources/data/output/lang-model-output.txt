@@ -1,0 +1,4 @@
+<s>,this,is,11
+this,is,a,11
+is,a,test,11
+a,test,<s>,11

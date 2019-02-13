@@ -1,4 +1,6 @@
-package org.reynoldsm88.bigram.modeler.rules;
+package org.reynoldsm88.bigram.modeler.rules
+
+;
 
 import java.util.UUID
 

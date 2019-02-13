@@ -1,8 +1,9 @@
 package org.reynoldsm88.bigram.modeler
 
 import com.holdenkarau.spark.testing.{RDDComparisons, SharedSparkContext}
-import org.reynoldsm88.bigram.modeler.BigramExtractor
+import org.apache.spark.SparkContext
 import org.reynoldsm88.bigram.modeler.config.{JobConfig, RulesDescriptor, SourceDescriptor}
+import org.reynoldsm88.bigram.modeler.model.BiGram
 import org.scalatest.FlatSpec
 
 class BigramExtractorTestSuite extends FlatSpec with SharedSparkContext with RDDComparisons {
@@ -10,6 +11,8 @@ class BigramExtractorTestSuite extends FlatSpec with SharedSparkContext with RDD
     private val testDataRootDir = System.getProperty( "user.dir" ) + "/bigram-extractor/src/test/resources/data"
 
     "Bigram Extractor" should "filter, parse, and add sentence boundaries an example Google Hangouts file" in {
+        val extractor : BigramExtractor = new SparkDroolsBigramExtractor( sc ) with ClasspathRulesProvider
+        val expected = Set( BiGram( "a test", "</s>", 11L ), BiGram( "this is", "a", 11L ), BiGram( "is a", "test", 11L ), BiGram( "<s> this", "is", 11L ) )
 
         val jobConfig : JobConfig = {
             val metadata = Map( "username" -> "Michael Reynolds" )
@@ -18,9 +21,7 @@ class BigramExtractorTestSuite extends FlatSpec with SharedSparkContext with RDD
             JobConfig( "hangouts-bigram-extractor", rules, sources )
         }
 
-        val extractor : BigramExtractor = new BigramExtractor( jobConfig, sc )
-        val actual = extractor.loadSources( jobConfig )
-        val expected = sc.textFile( testDataRootDir + "/output/hangouts-sample-expected.txt" )
-        assertRDDEquals( expected, actual )
+        val actual : Set[ BiGram ] = extractor.extractBigrams( jobConfig )
+        assert( expected == actual )
     }
 }

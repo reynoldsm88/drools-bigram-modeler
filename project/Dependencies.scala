@@ -13,6 +13,7 @@ object Dependencies {
     val scalaTestVersion = "3.0.4"
     val gensonVersion = "1.4"
     val scalatraVersion = "2.5.4"
+    val mockitoVersion = "0.4.3"
 
 
     val slf4j = Seq( "org.slf4j" % "slf4j-api" % slf4jVersion )
@@ -37,7 +38,7 @@ object Dependencies {
                        "org.kie" % "kie-internal" % kiegroupVersion % "test",
                        "org.kie" % "kie-ci" % kiegroupVersion % "test" )
 
-    val opennlp = Seq( "org.apache.opennlp" % "opennlp-tools" % opennlpVersion )
+    //    val opennlp = Seq( "org.apache.opennlp" % "opennlp-tools" % opennlpVersion )
 
     val hadoop = Seq( "org.apache.hadoop" % "hadoop-common" % hadoopVersion,
                       "org.apache.hadoop" % "hadoop-hdfs" % hadoopVersion,
@@ -53,7 +54,11 @@ object Dependencies {
     // TODO - fix versions later
     val scalatra = Seq( "org.scalatra" %% "scalatra" % scalatraVersion,
                         "org.scalatra" %% "scalatra-scalatest" % scalatraVersion % "test",
+                        "org.scalatra" %% "scalatra-json" % scalatraVersion,
+                        "org.json4s" %% "json4s-jackson" % "3.5.2",
                         "ch.qos.logback" % "logback-classic" % "1.2.3",
                         "org.eclipse.jetty" % "jetty-webapp" % "9.2.19.v20160908",
                         "javax.servlet" % "javax.servlet-api" % "3.1.0" )
+
+    val mockito = Seq( "org.mockito" %% "mockito-scala" % mockitoVersion % "test" )
 }

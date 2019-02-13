@@ -5,7 +5,7 @@ import org.kie.api.{KieBase, KieServices}
 
 import scala.collection.mutable.ListBuffer
 
-object RulesEvaluator extends {
+object RulesEvaluator {
 
     private val kservices : KieServices = KieServices.Factory.get
 
@@ -23,5 +23,4 @@ object RulesEvaluator extends {
 
         resultsBuffer.toList
     }
-
 }
